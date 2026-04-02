@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub 페이지 비교 허브</title>
+  <meta name="description" content="Open Claude, Codex, Claude Code 결과물을 한 번에 비교할 수 있는 허브 페이지" />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#131a30;
+      --panel2:#0f1528;
+      --line:rgba(255,255,255,.08);
+      --text:#f6f8ff;
+      --muted:#aab4d0;
+      --accent:#8db4ff;
+      --accent2:#8cffc4;
+      --shadow:0 18px 48px rgba(0,0,0,.28);
+      --radius:24px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, Pretendard, "Noto Sans KR", system-ui, -apple-system, Segoe UI, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(141,180,255,.14), transparent 28%),
+        radial-gradient(circle at 90% 18%, rgba(140,255,196,.10), transparent 25%),
+        linear-gradient(180deg,#080c18 0%, #0b1020 55%, #10182d 100%);
+    }
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(calc(100% - 32px), var(--max)); margin:0 auto}
+    .hero{padding:72px 0 34px}
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:10px; padding:10px 14px;
+      border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.05);
+      color:var(--muted); font-size:14px;
+    }
+    .eyebrow::before{
+      content:""; width:9px; height:9px; border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 0 18px rgba(141,180,255,.6);
+    }
+    h1{
+      margin:20px 0 14px; font-size:clamp(36px,6vw,66px);
+      line-height:.98; letter-spacing:-.05em;
+    }
+    .sub{
+      margin:0; max-width:760px; color:var(--muted); font-size:clamp(16px,2vw,19px); line-height:1.75;
+    }
+    .meta{
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px;
+      margin-top:28px;
+    }
+    .meta .item{
+      padding:18px; border-radius:20px; background:rgba(255,255,255,.04);
+      border:1px solid var(--line); box-shadow:var(--shadow);
+    }
+    .meta strong{display:block; margin-bottom:8px; font-size:18px}
+    .meta span{color:var(--muted); line-height:1.55; font-size:14px}
+    .grid{
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px;
+      padding:22px 0 72px;
+    }
+    .card{
+      display:flex; flex-direction:column; min-height:100%;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .thumb{
+      aspect-ratio:16/10;
+      padding:22px;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(141,180,255,.18), transparent 24%),
+        linear-gradient(160deg,#111833,#0f1528 70%);
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:flex-end;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px; padding:9px 12px;
+      border-radius:999px; background:rgba(255,255,255,.08); border:1px solid var(--line);
+      color:#dce5ff; font-size:13px; font-weight:700;
+    }
+    .body{padding:22px; display:flex; flex-direction:column; gap:14px; flex:1}
+    .body h2{margin:0; font-size:26px; letter-spacing:-.04em}
+    .body p{margin:0; color:var(--muted); line-height:1.7}
+    .points{display:grid; gap:10px; margin-top:4px}
+    .points div{
+      padding:12px 14px; border-radius:16px; background:rgba(255,255,255,.04); border:1px solid var(--line);
+      color:#d7e1ff; font-size:14px;
+    }
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:auto; padding-top:6px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      min-height:48px; padding:0 16px; border-radius:14px; font-weight:800;
+      transition:transform .18s ease, opacity .18s ease;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),#c2d6ff); color:#08101c}
+    .btn.secondary{background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--text)}
+    .footer{
+      padding:0 0 56px; color:var(--muted); font-size:14px; line-height:1.7;
+    }
+    code{
+      padding:2px 6px; border-radius:8px; background:rgba(255,255,255,.06);
+      border:1px solid var(--line); font-family:ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    @media (max-width: 980px){
+      .grid, .meta{grid-template-columns:1fr}
+      .hero{padding-top:42px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">같은 프롬프트, 다른 작업 흐름</div>
+      <h1>세 가지 결과물을<br>한 번에 비교하기</h1>
+      <p class="sub">아래 페이지는 모두 같은 주제의 GitHub 소개 페이지를 바탕으로 만든 결과물입니다. Open Claude(Codex), 순정 Codex, Claude Code 결과를 각각 따로 열어볼 수 있도록 정리해두었고, 비교가 쉽게 되도록 이름과 역할도 분리해두었습니다.</p>
+      <div class="meta">
+        <div class="item">
+          <strong>Open Claude (Codex)</strong>
+          <span>Claude Code식 흐름 위에 Codex를 얹어서 만든 결과물</span>
+        </div>
+        <div class="item">
+          <strong>Codex</strong>
+          <span>비교 기준으로 보기 좋은 순정 Codex 결과물</span>
+        </div>
+        <div class="item">
+          <strong>Claude Code</strong>
+          <span>작업 흐름과 완성도 차이를 확인하기 위한 기준점</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="thumb"><div class="badge">OPEN CLAUDE · CODEX</div></div>
+        <div class="body">
+          <h2>Open Claude</h2>
+          <p>Claude Code 스타일의 작업 흐름을 다른 모델에 얹었을 때 어떤 감각이 나오는지 보기 좋은 버전입니다.</p>
+          <div class="points">
+            <div>Claude Code식 흐름 반영</div>
+            <div>Codex 기반 실행</div>
+            <div>비교군 중 가장 실험적인 포지션</div>
+          </div>
+          <div class="actions">
+            <a class="btn primary" href="./openclaude/" target="_blank" rel="noopener">결과 보기</a>
+            <a class="btn secondary" href="./openclaude/">같은 탭에서 열기</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><div class="badge">BASELINE · CODEX</div></div>
+        <div class="body">
+          <h2>Codex</h2>
+          <p>가장 직접적인 비교 기준이 되는 순정 Codex 결과물로, 프롬프트 해석 방향 차이를 확인하기 좋습니다.</p>
+          <div class="points">
+            <div>순정 Codex 결과</div>
+            <div>비교용 기준 페이지</div>
+            <div>직접 결과 차이 확인 가능</div>
+          </div>
+          <div class="actions">
+            <a class="btn primary" href="./codex/" target="_blank" rel="noopener">결과 보기</a>
+            <a class="btn secondary" href="./codex/">같은 탭에서 열기</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><div class="badge">REFERENCE · CLAUDE CODE</div></div>
+        <div class="body">
+          <h2>Claude Code</h2>
+          <p>전체 비교의 기준점이 되는 페이지로, Open Claude나 Codex 쪽 결과와 작업 결을 나란히 보기 좋습니다.</p>
+          <div class="points">
+            <div>비교 기준이 되는 참조 결과</div>
+            <div>작업 흐름 차이 확인용</div>
+            <div>세 결과물 중 레퍼런스 포지션</div>
+          </div>
+          <div class="actions">
+            <a class="btn primary" href="./claude-code/" target="_blank" rel="noopener">결과 보기</a>
+            <a class="btn secondary" href="./claude-code/">같은 탭에서 열기</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="footer">
+      GitHub Pages에 그대로 올릴 수 있도록 루트에 <code>index.html</code>을 두고, 각 결과물은 <code>/openclaude</code>, <code>/codex</code>, <code>/claude-code</code> 폴더 안의 <code>index.html</code>로 정리했습니다.
+    </section>
+  </div>
+</body>
+</html>
