@@ -1,0 +1,164 @@
+  <!DOCTYPE html>                                                                                                                                                                                                                                                           
+  <html lang="en">                                                                                                                                                                                                                                                            <head>                                                                                                                                                                                                                                                                    
+      <meta charset="UTF-8">                                                                                                                                                                                                                                                      <meta name="viewport" content="width=device-width, initial-scale=1.0">                                                                                                                                                                                                
+      <title>GitHub - The Ultimate Code Collaboration Platform</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+      <style>
+          * {
+              box-sizing: border-box;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+              background-color: #1a1a2e;
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              min-height: 100vh;
+          }
+          .container {
+              width: 100%;
+              max-width: 1400px;
+              margin: 0 auto;
+              padding: 2rem 1rem;
+              position: relative;
+          }
+          header {
+              background-color: #282c34;
+              color: #fff;
+              text-align: center;
+              padding: 2.5rem 1rem;
+              border-radius: 10px 10px 0 0;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+          }
+          header h1 {
+              font-size: 3.2rem;
+              margin-bottom: 0.5rem;
+          }
+          header p {
+              opacity: 0.7;
+              font-weight: 300;
+          }
+          .tagline {
+              display: block;
+              background-color: #464c5e;
+              color: #fff;
+              padding: 0.8rem;
+              border-radius: 8px;
+              margin-top: 1rem;
+              opacity: 0.8;
+          }
+          main {
+              background-color: #f7f8fb;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+              margin-top: 3rem;
+          }
+          .section {
+              padding: 2.5rem;
+              border-bottom: 1px solid #dcdfe6;
+              position: relative;
+          }
+          .section p {
+              line-height: 1.8;
+              margin-bottom: 2rem;
+          }
+          .btn-primary {
+              background-color: #4e73df !important;
+              color: #fff !important;
+          }
+          .btn-primary:hover {
+              background-color: #5c6bb9 !important;
+          }
+          footer {
+              text-align: center;
+              padding: 1.5rem;
+              font-size: 0.9rem;
+              opacity: 0.8;
+          }
+      </style>
+  </head>
+  <body>
+  <div class="container">
+      <header>
+          <h1>GitHub</h1>
+          <p>The Ultimate Code Collaboration Platform</p>
+          <div class="tagline">Connect your team, track your progress, and build great things together.</div>
+      </header>
+
+      <main id="content" class="section">
+          <div class="container">
+              <h2>Why GitHub?</h2>
+
+              <p>GitHub is the most popular hosting platform for version control using Git. It's used by millions of developers worldwide to:</p>
+
+              <ul>
+                  <li><strong>Collaborate</strong>: Work together on code in real-time.</li>
+                  <li><strong>Track</strong>: Keep track of your changes with commits and branches.</li>
+                  <li><strong>Review</strong>: Get feedback through pull requests.</li>
+                  <li><strong>Publish</strong>: Host projects publicly to share with the world.</li>
+              </ul>
+
+              <div class="d-flex justify-content-between mb-3">
+                  <button id="btnCommit" class="btn btn-sm btn-primary">Create Commit</button>
+                  <button id="btnPush" class="btn btn-sm btn-success">Push to Remote</button>
+              </div>
+          </div>
+
+          <div class="section">
+              <h2>Key Features Today (April 2026)</h2>
+
+              <p>GitHub continues to evolve. Some of the latest features include:</p>
+
+              <ul>
+                  <li><strong>AI Code Assistants</strong>: GitHub Copilot integration is now native.</li>
+                  <li><strong>Smart Branching</strong>: AI suggests optimal branch strategies.</li>
+                  <li><strong>Real-time Collaboration</strong>: Like Google Docs for code editing.</li>
+              </ul>
+
+              <div class="mt-3">
+                  <a href="#" onclick="document.getElementById('content').style.backgroundColor = '#ffeb3b';"
+                     class="btn btn-outline-secondary">Highlight Feature</a>
+
+                  <button id="themeToggle" class="btn btn-sm btn-outline-light mt-1">🌙 Toggle Dark Mode</button>
+              </div>
+          </div>
+
+      </main>
+
+      <footer>
+          &copy; 2026 GitHub. All rights reserved.
+      </footer>
+
+      <script>
+          document.getElementById('themeToggle').addEventListener('click', () => {
+              const theme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+              localStorage.setItem('theme', theme);
+
+              if (theme === 'dark') {
+                  document.body.style.backgroundColor = '#1a1a2e';
+                  document.documentElement.style.color = '#f9f9f9';
+              } else {
+                  document.body.style.backgroundColor = '#f7f8fb';
+                  document.documentElement.style.color = '#2b3046';
+              }
+          });
+
+          const btnCommit = document.getElementById('btnCommit');
+          const btnPush = document.getElementById('btnPush');
+
+          btnCommit.addEventListener('click', () => {
+              alert('Commit created! This is a modern feature using AI assistance.');
+          });
+
+          btnPush.addEventListener('click', async () => {
+              try {
+                  await fetch('/api/push', { method: 'POST' });
+                  document.getElementById('content').innerHTML = '<p>🚀 Successfully pushed to remote repository!</p>';
+              } catch (error) {
+                  document.getElementById('content').innerHTML = `<div class="alert alert-danger">❌ Failed to push. Check your network connection.</div>`;
+                  console.error(error);
+              }
+          });
+      </script>
+  </body>
+  </html>
